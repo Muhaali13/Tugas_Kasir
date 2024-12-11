@@ -15,8 +15,9 @@
                                 PENJUALAN
                             </div>
                             {{-- BUTTON REDIRECT HALAMAN ADD PENJUALAN --}}
-                            <div >
-                                <a href="{{ route('penjualan.create') }}" class="bg-sky-400 p-1 text-white rounded-xl px-4">Tambah</a>
+                            <div>
+                                <a href="{{ route('penjualan.create') }}"
+                                    class="bg-sky-400 p-1 text-white rounded-xl px-4">Tambah</a>
                             </div>
                         </div>
                     </div>
@@ -46,6 +47,9 @@
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             TOTAL BAYAR
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            ACTION
                                         </th>
                                     </tr>
                                 </thead>
@@ -77,6 +81,13 @@
                                             <td class="px-6 py-4 bg-gray-100">
                                                 {{ $f->total_bayar }}
                                             </td>
+                                            <td class="px-6 py-4 bg-gray-100">
+                                                <button
+                                                    class="bg-red-400 p-3 w-10 h-10 rounded-xl text-white hover:bg-red-500"
+                                                    onclick="return dataDelete('{{ $f->id }}','{{ $f->konsumen->nama_konsumen }}')">
+                                                    <i class="fi fi-sr-delete-document"></i>
+                                                </button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -91,4 +102,27 @@
             </div>
         </div>
     </div>
+    <script>
+        const dataDelete = async (id, nama_konsumen) => {
+            let tanya = confirm(`Apakah anda yakin untuk menghapus transaksi ${nama_konsumen}?`);
+            if (tanya) {
+                try {
+                    const response = await axios.post(`/penjualan/${id}`, {
+                        '_method': 'DELETE',
+                        '_token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    });
+
+                    if (response.status === 200) {
+                        alert('Transaksi berhasil dihapus');
+                        location.reload();
+                    } else {
+                        alert('Gagal menghapus transaksi. Silakan coba lagi.');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert('Terjadi kesalahan saat menghapus transaksi. Silakan cek konsol untuk detail.');
+                }
+            }
+        };
+    </script>
 </x-app-layout>

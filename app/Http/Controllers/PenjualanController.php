@@ -46,6 +46,25 @@ class PenjualanController extends Controller
 
         $produk = $request->input('produk', []);
         foreach ($produk as $index => $p) {
+
+            // Cari produk di tabel produk_jual
+            $produkJual = ProdukJual::where('kode_produk', $p)->first();
+            if ($produkJual) {
+                // Kurangi qty di produk_jual
+                $produkJual->qty -= $request->qty[$index];
+                if ($produkJual->qty < 0) {
+                    return redirect()
+                        ->back()
+                        ->with('error', "Stok produk $p tidak mencukupi.");
+                }
+                $produkJual->save();
+            } else {
+                return redirect()
+                    ->back()
+                    ->with('error', "Produk $p tidak ditemukan.");
+            }
+            // ===============================//
+
             $dataDetail = [
                 'kode_penjualan' => $kode_penjualan,
                 'kode_produk' => $p,
@@ -60,6 +79,8 @@ class PenjualanController extends Controller
             'tgl_penjualan' => $request->input('tgl_penjualan'),
             'id_konsumen' => $request->input('id_konsumen'),
             'status_pembelian' => $request->input('status_pembelian'),
+            'total_bayar' => $request->input('total_bayar'),
+            'total_jual' => $request->input('total_jual'),
             'id_user' => Auth::user()->id,
         ];
 
@@ -99,6 +120,25 @@ class PenjualanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $penjualan = Penjualan::findOrFail($id);
+        $kodePenjualan = $penjualan->kode_penjualan;
+
+        // Ambil detail penjualan untuk memproses qty
+        $details = DetailPenjualan::where('kode_penjualan', $kodePenjualan)->get();
+
+        foreach ($details as $detail) {
+            $produkJual = ProdukJual::where('kode_produk', $detail->kode_produk)->first();
+            if ($produkJual) {
+                // Tambahkan kembali qty yang dihapus
+                $produkJual->qty += $detail->qty;
+                $produkJual->save();
+            }
+        }
+
+        // Hapus detail penjualan dan data penjualan
+        DetailPenjualan::where('kode_penjualan', $kodePenjualan)->delete();
+        $penjualan->delete();
+
+        return back()->with('message_delete', 'Data Transaksi berhasil dihapus.');
     }
 }

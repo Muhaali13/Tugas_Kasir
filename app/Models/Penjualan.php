@@ -27,7 +27,7 @@ class Penjualan extends Model
         $latestCodeNumber = intval(substr($latestCode, 2));
         $nextCodeNumber = $latestCodeNumber ? $latestCodeNumber + 1 : 1;
         $formattedCodeNumber = sprintf("%05d", $nextCodeNumber);
-        return 'PNJ' . $formattedCodeNumber;
+        return 'J' . $formattedCodeNumber;
     }
 
     public function konsumen()
