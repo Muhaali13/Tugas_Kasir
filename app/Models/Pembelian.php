@@ -24,7 +24,7 @@ class Pembelian extends Model
         $latestCodeNumber = intval(substr($latestCode, 2));
         $nextCodeNumber = $latestCodeNumber ? $latestCodeNumber + 1 : 1;
         $formattedCodeNumber = sprintf("%05d", $nextCodeNumber);
-        return 'PMB' . $formattedCodeNumber;
+        return 'B' . $formattedCodeNumber;
     }
 
     public function supplier()

@@ -102,6 +102,26 @@ class PembelianController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $pembelian = Pembelian::findOrFail($id);
+        $kodePembelian = $pembelian->kode_pembelian;
+
+        // Ambil detail penjualan untuk memproses qty
+        $details = DetailPembelian::where('kode_pembelian', $kodePembelian)->get();
+
+        // foreach ($details as $detail) {
+        //     $produkJual = ProdukJual::where('kode_produk', $detail->kode_produk)->first();
+        //     if ($produkJual) {
+        //         // Tambahkan kembali qty yang dihapus
+        //         $produkJual->qty += $detail->qty;
+        //         $produkJual->save();
+        //     }
+        // }
+
+        // Hapus detail penjualan dan data penjualan
+        DetailPembelian::where('kode_pembelian', $kodePembelian)->delete();
+        $pembelian->delete();
+
+        return back()->with('message_delete', 'Data Transaksi berhasil dihapus.');
+    
     }
 }
