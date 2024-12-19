@@ -40,46 +40,6 @@
                                         required />
                                 </div>
                             </div>
-                            <div class="flex gap-5">
-                                <div class="mb-5 w-full">
-                                    <label for="konsumen"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Konsumen</label>
-                                    <select class="js-example-placeholder-single js-states form-control w-full m-6"
-                                        id="id_konsumen" name="id_konsumen" data-placeholder="Pilih Konsumen"
-                                        onchange="updateStatusPembelian()">
-                                        <option value="">Pilih...</option>
-                                        @foreach ($konsumen as $k)
-                                            <option value="{{ $k->id }}"
-                                                data-status="{{ $k->status }}">
-                                                {{ $k->nama_konsumen }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                {{-- Form untuk Status Pembelian --}}
-                                <div id="status-pembelian-container" class="mb-5 w-full" style="display: none">
-                                    <label for="status_pembelian"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status
-                                        Pembelian</label>
-                                    <select class="js-example-placeholder-single js-states form-control w-full m-6"
-                                        id="status_pembelian" name="status_pembelian"
-                                        data-placeholder="Pilih Status Pembelian">
-                                        <option value="">Pilih...</option>
-                                        <option value="LUNAS">LUNAS</option>
-                                        <option value="PIUTANG">PIUTANG</option>
-                                    </select>
-                                </div>
-
-                                <div id="status-pembelian-text-container" class="mb-5 w-full" style="display: none">
-                                    <label for="status_pembelian"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status
-                                        Pembelian</label>
-                                    <input type="text" id="status_pembelian" name="status_pembelian" value="LUNAS"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        />
-                                </div>
-                            </div>
-
                             {{-- DETAIL PENJUALAN PRODUK --}}
                             <div class="p-4 bg-gray-100 mb-6 rounded-xl font-bold">
                                 <div class="flex items-center justify-between">
@@ -104,22 +64,33 @@
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required />
                                 </div>
-                                <div class="w-full flex gap-5">
-                                    <div class="mb-5 w-full">
-                                        <label for="total_bayar"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
-                                            Bayar</label>
-                                        <input type="number" id="total_bayar" name="total_bayar"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            required />
-                                    </div>
-                                    <div class="mb-5 w-full">
-                                        <label for="piutangKembali"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Piutang/Kembali</label>
-                                        <input type="number" id="piutangKembali" name="piutangKembali"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            required />
-                                    </div>
+                                <div class="mb-5 w-full">
+                                    <label for="konsumen"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Konsumen</label>
+                                    <select class="js-example-placeholder-single js-states form-control w-full m-6"
+                                        id="id_konsumen" name="id_konsumen" data-placeholder="Pilih Konsumen"
+                                        onchange="updateStatusPembelian()">
+                                        <option value="">Pilih...</option>
+                                        @foreach ($konsumen as $k)
+                                            <option value="{{ $k->id }}" data-status="{{ $k->status }}">
+                                                {{ $k->nama_konsumen }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-5 w-full">
+                                    <label for="total_bayar"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Total
+                                        Bayar</label>
+                                    <input type="number" id="total_bayar" name="total_bayar"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required />
+                                </div>
+                                <div class="mb-5 w-full">
+                                    <label for="piutangKembali"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Piutang/Kembali</label>
+                                    <input type="number" id="piutangKembali" name="piutangKembali"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required/>
                                 </div>
                             </div>
                             <button type="submit"
@@ -133,8 +104,8 @@
     </div>
     <script>
         $(document).ready(function() {
-            // Fungsi menghitung piutang/kembalian
-            function calculatePiutangKembali(){
+            // Fungsi menghitung Piutang/Kembali
+            function calculatePiutangKembali() {
                 const totalJual = parseFloat($('#total_jual').val()) || 0;
                 const totalBayar = parseFloat($('#total_bayar').val()) || 0;
                 const piutangKembali = totalBayar - totalJual;
@@ -142,14 +113,14 @@
             }
 
             // Event listener untuk total_bayar
-            $('#total_bayar').on('input', function (){
+            $('#total_bayar').on('input', function() {
                 calculatePiutangKembali();
-            })
+            });
 
-             // Event listener untuk total_jual ( hanya jika sudah diubah secara manual atau oleh kode lain)
-            $('#total_jual').on('input', function (){
+            // Event listener untuk total_jual (hanya jika diubah secara manual atau oleh kode lain)
+            $('#total_jual').on('input', function() {
                 calculatePiutangKembali();
-            })
+            });
 
             // MENAMBAH ROW DETAIL PRODUK PENJUALAN
             $('#addRowBtn').click(function(event) {
@@ -219,21 +190,20 @@
                     const qty = parseInt(qtyInput.value) || 0;
                     totalHargaInput.value = harga * qty;
 
-                    // menghitung total jual
+                    // MENGHITUNG TOTAL JUAL
                     calculateTotalJual();
                 };
                 qtyInput.addEventListener("input", calculateTotalHarga);
             }
 
-            //Perhitungan total jual
+            // PERHITUNGAN TOTAL JUAL
             function calculateTotalJual() {
                 let totalJual = 0;
                 $("[id^='total_harga']").each(function() {
                     totalJual += parseFloat($(this).val()) || 0;
-                })
+                });
                 $('#total_jual').val(totalJual);
             }
-
 
         });
 
@@ -268,19 +238,28 @@
 
     <script>
         function updateStatusPembelian() {
-            var selectElement = document.getElementById("id_konsumen");
-            var selectedOption = selectElement.options[selectElement.selectedIndex];
-            var dataStatus = selectedOption.getAttribute("data-status");
+            const konsumenSelect = document.getElementById('id_konsumen');
+            const totalBayarInput = document.getElementById('total_bayar');
+            const totalJualInput = document.getElementById('total_jual');
+            const piutangKembali = document.getElementById('piutangKembali');
 
-            //Menyembunyikan semua form status pembelian
-            document.getElementById("status-pembelian-container").style.display = "none";
-            document.getElementById("status-pembelian-text-container").style.display ="none";
+            if (!konsumenSelect || !totalBayarInput || !totalJualInput|| !piutangKembali) {
+                console.error("Element tidak ditemukan!");
+                return;
+            }
 
-            //tampilkan form sesuai status konsumen
-            if (dataStatus === "KARYAWAN") {
-                document.getElementById("status-pembelian-container").style.display = "block";
-            } else if (dataStatus === "MAHASISWA") {
-                document.getElementById("status-pembelian-text-container").style.display = "block";
+            const selectedOption = konsumenSelect.options[konsumenSelect.selectedIndex];
+            const statusKonsumen = selectedOption ? selectedOption.getAttribute('data-status') : null;
+
+            if (statusKonsumen === 'MAHASISWA') {
+                totalBayarInput.value = totalJualInput.value || 0;
+                totalBayarInput.readOnly = true;
+                piutangKembali.value = 0;
+                piutangKembali.readOnly = true;
+            } else {
+                totalBayarInput.value = '';
+                totalBayarInput.readOnly = false;
+                piutangKembali.readOnly = true;
             }
         }
     </script>

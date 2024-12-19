@@ -74,11 +74,18 @@ class PenjualanController extends Controller
             DetailPenjualan::create($dataDetail);
         }
 
+        if($request->input('total_bayar')< $request->input('total_jual')){
+            $statusPembelian = 'Piutang';
+        }else {
+            $statusPembelian = 'Lunas';
+        }
+
+
         $data = [
             'kode_penjualan' => $kode_penjualan,
             'tgl_penjualan' => $request->input('tgl_penjualan'),
             'id_konsumen' => $request->input('id_konsumen'),
-            'status_pembelian' => $request->input('status_pembelian'),
+            'status_pembelian' => $statusPembelian,
             'total_bayar' => $request->input('total_bayar'),
             'total_jual' => $request->input('total_jual'),
             'id_user' => Auth::user()->id,

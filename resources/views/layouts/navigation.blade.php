@@ -89,6 +89,35 @@
                         </x-dropdown>
                     </li>
                 </div>
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <li class="relative list-none">
+                        <x-dropdown>
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                    <div
+                                        class="text-[16px] font-bold tracking-wide {{ request()->routeIs('pembelian.index') || request()->routeIs('penjualan.index')  ? 'text-[#F2994A]' : '' }}">
+                                        Laporan</div>
+
+                                    <div class="ms-1 mt-1">
+                                        <i
+                                            class="fi fi-rr-caret-down {{ request()->routeIs('pembelian.index') || request()->routeIs('penjualan.index')  ? 'text-[#F2994A]' : '' }}"></i>
+                                    </div>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('laporanPenjualan.index')" :class="request()->routeIs('laporanPenjualan.index') ? 'text-red-500 font-bold' : ''">
+                                    {{ __('Penjualan') }}
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('pembelian.index')" :class="request()->routeIs('pembelian.index') ? 'text-red-500 font-bold' : ''">
+                                    {{ __('Pembelian') }}
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </li>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

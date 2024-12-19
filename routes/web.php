@@ -5,6 +5,7 @@ use App\Http\Controllers\DetailPembelianController;
 use App\Http\Controllers\DetailPenjualanController;
 use App\Http\Controllers\KonsinyasiController;
 use App\Http\Controllers\KonsumenController;
+use App\Http\Controllers\LaporanPenjualanController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukController;
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function(){
     Route::resource('pembelian', PembelianController::class);
     Route::resource('detailPembelian', DetailPembelianController::class);
     Route::get('/produk/produk_name/{id}', [ProdukJualController::class, 'getProduk']);
+    Route::resource('laporanPenjualan', LaporanPenjualanController::class);
 });
 
 
