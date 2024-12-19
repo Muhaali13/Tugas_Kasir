@@ -17,6 +17,7 @@
                     </x-nav-link>
                 </div>
 
+                @can('role-A')
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
                     <li class="relative list-none">
                         <x-dropdown>
@@ -51,7 +52,9 @@
                             </x-slot>
                         </x-dropdown>
                     </li>
-                </div>
+                </div>   
+                @endcan
+                
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">

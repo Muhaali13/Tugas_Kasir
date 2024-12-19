@@ -81,6 +81,7 @@
                                             <td class="px-6 py-4 bg-gray-100">
                                                 {{ $f->total_bayar }}
                                             </td>
+                                            @can('role-A')
                                             <td class="px-6 py-4 bg-gray-100">
                                                 <button
                                                     class="bg-red-400 p-3 w-10 h-10 rounded-xl text-white hover:bg-red-500"
@@ -88,6 +89,7 @@
                                                     <i class="fi fi-sr-delete-document"></i>
                                                 </button>
                                             </td>
+                                            @endcan
                                         </tr>
                                     @endforeach
                                 </tbody>
