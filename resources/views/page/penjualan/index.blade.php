@@ -48,9 +48,11 @@
                                         <th scope="col" class="px-6 py-3">
                                             TOTAL BAYAR
                                         </th>
+                                        @can('role-A')
                                         <th scope="col" class="px-6 py-3">
                                             ACTION
                                         </th>
+                                        @endcan
                                     </tr>
                                 </thead>
                                 <tbody>
