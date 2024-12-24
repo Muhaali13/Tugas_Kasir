@@ -18,9 +18,9 @@ class PembelianController extends Controller
      */
     public function index()
     {
-        $data = Pembelian::all();
-        $dataDetail = DetailPenjualan::all();
-        return response()->json([
+        $data = Pembelian::paginate(5);
+        $dataDetail = DetailPembelian::paginate(5);
+        return view('page.pembelian.index')->with([
             'data' => $data,
             'dataDetail' => $dataDetail
         ]);
@@ -43,67 +43,51 @@ class PembelianController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'kode_pembelian' => 'required',
+            'tgl_pembelian' => 'required|date',
+            'id_supplier' => 'required|exists:supplier,id',
+
+
+        ]);
+
+        $kode_pembelian = $request->input('kode_pembelian');
+
+        $produk = $request->input('produk', []);
+        foreach ($produk as $index => $p) {
+            $dataDetail = [
+                'kode_pembelian' => $kode_pembelian,
+                'kode_produk' => $p,
+                'qty' => $request->qty[$index],
+                'total' => $request->total_harga[$index],
+            ];
+
+            DetailPembelian::create($dataDetail);
+        }
+
         $data = [
-            'kode_pembelian' => $request->input('kode_pembelian'),
+            'kode_pembelian' => $kode_pembelian,
             'tgl_pembelian' => $request->input('tgl_pembelian'),
             'id_supplier' => $request->input('id_supplier'),
-            'total_bayar' => $request->input('total_bayar'),
+            'total_harga' => $request->input('total_harga'),
+            'id_user' => Auth::user()->id,
         ];
 
-        $dataDetail = [
-            'kode_pembelian' => $request->input('kode_pembelian'),
-            'kode_produk' => $request->input('kode_produk'),
-            'qty' => $request->input('qty'),
-            'total' => $request->input('total'),
-        ];
+        // Update stok produk
+        $produkJual = ProdukJual::where('kode_produk', $p)->first();
+        if ($produkJual) {
+            $produkJual->qty += $request->qty[$index];
+            $produkJual->save();
+        }
 
+        // dd($request->input('total_harga'));
         Pembelian::create($data);
-        DetailPembelian::create($dataDetail);
 
-        return response()->json([
-            'message_update' => "Data Added!"
-        ]);
+        return redirect()
+            ->route('pembelian.index')
+            ->with('message', 'Data sudah ditambahkan');
     }
-    /**
-     * Store a newly created resource in storage.
-     */
-    // public function store(Request $request)
-    // {
-    //     $kode_pembelian = $request->input('kode_pembelian'); // Mendapatkan kode_pembelian
 
-    //     $produk = $request->input('produk', []);
-    //     foreach ($produk as $index => $p) {
-    //         // Pastikan nilai kode_pembelian ada di data detail
-    //         $dataDetail = [
-    //             'kode_pembelian' => $kode_pembelian,
-    //             'kode_produk' => $p,
-    //             'qty' => $request->qty[$index],
-    //             'total' => $request->total_harga[$index],
-    //         ];
-
-    //         // Simpan data ke dalam tabel detail_pembelian
-    //         DetailPembelian::create($dataDetail);
-    //     }
-
-    //     $data = [
-    //         'kode_pembelian' => $kode_pembelian,
-    //         'tgl_pembelian' => $request->input('tgl_pembelian'),
-    //         'id_supplier' => $request->input('id_supplier'),
-    //         'id_user' => Auth::user()->id,
-    //     ];
-
-
-    //     Pembelian::create($data);
-    //     DetailPembelian::create($dataDetail);
-
-    //     return response()->json([
-    //         'message_update' => "Data-Added!"
-    //     ]);
-
-    //     // return redirect()
-    //     //     ->route('pembelian.index')
-    //     //     ->with('message', 'Data sudah ditambahkan');
-    // }
 
     /**
      * Display the specified resource.
@@ -126,58 +110,60 @@ class PembelianController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $kodePembelian = $request->input('kode_pembelian');
+        // $kodePembelian = $request->input('kode_pembelian');
 
-        $data = [
-            'tgl_pembelian' => $request->input('tgl_pembelian'),
-            'id_supplier' => $request->input('id_supplier'),
-            'total_bayar' => $request->input('total_bayar'),
-        ];
+        // $data = [
+        //     'tgl_pembelian' => $request->input('tgl_pembelian'),
+        //     'id_supplier' => $request->input('id_supplier'),
+        //     'total_harga' => $request->input('total_harga'),
+        // ];
 
-        $dataDetail = [
-            'kode_produk' => $request->input('kode_produk'),
-            'qty' => $request->input('qty'),
-            'total' => $request->input('total'),
-        ];
+        // $dataDetail = [
+        //     'kode_produk' => $request->input('kode_produk'),
+        //     'qty' => $request->input('qty'),
+        //     'total' => $request->input('total_harga'),
+        // ];
 
-        $datas = Pembelian::where('kode_pembelian', $kodePembelian)->first();
-        $datas->update($data);
+        // $datas = Pembelian::where('kode_pembelian', $kodePembelian)->first();
+        // $datas->update($data);
 
-        $datasDetail = DetailPembelian::where('kode_pembelian', $kodePembelian)->first();
-        $datasDetail->update($dataDetail);
+        // $datasDetail = DetailPembelian::where('kode_pembelian', $kodePembelian)->first();
+        // $datasDetail->update($dataDetail);
 
-        return response()->json([
-            'message_update' => "Data Updated!"
-        ]);
+        // // return response()->json([
+        // //     'message_update' => "Data Updated!"
+        // // ]);
+
+        // return redirect()
+        //     ->route('pembelian.index')
+        //     ->with('message', 'Data sudah diupdated!');
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        try {
-            $data = Pembelian::findOrFail($id);
-            $kodePembelian = $data->kode_pembelian;
+        $pembelian = Pembelian::findOrFail($id);
+        $kodePembelian = $pembelian->kode_pembelian;
 
-            $data = Pembelian::where('kode_pembelian', $kodePembelian)->first();
-            $dataDetail = DetailPembelian::where('kode_pembelian', $kodePembelian)->first();
+        // Ambil detail penjualan untuk memproses qty
+        $details = DetailPembelian::where('kode_pembelian', $kodePembelian)->get();
 
-            if ($data) {
-                $data->delete();
+        foreach ($details as $detail) {
+            // Ambil data produk terkait berdasarkan kode produk
+            $produkJual = ProdukJual::where('kode_produk', $detail->kode_produk)->first();
+
+            if ($produkJual) {
+                // Kurangi qty produk sesuai dengan jumlah dalam detail pembelian
+                $produkJual->qty -= $detail->qty;
+                $produkJual->save();
             }
-
-            if ($dataDetail) {
-                $dataDetail->delete();
-            }
-
-            return response()->json([
-                'message_delete' => "Data Deleted!"
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Failed to delete data.',
-                'message' => $e->getMessage()
-            ], 500);
         }
+
+        // Hapus detail pembelian dan data pembelian
+        DetailPembelian::where('kode_pembelian', $kodePembelian)->delete();
+        $pembelian->delete();
+
+        return back()->with('message_delete', 'Data Transaksi berhasil dihapus.');
     }
 }

@@ -13,7 +13,7 @@ class Pembelian extends Model
         'kode_pembelian',
         'tgl_pembelian',
         'id_supplier',
-        'total_bayar'
+        'total_harga'
     ];
 
     protected $table = 'pembelian';

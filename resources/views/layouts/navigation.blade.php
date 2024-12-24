@@ -114,7 +114,7 @@
                                     {{ __('Penjualan') }}
                                 </x-dropdown-link>
 
-                                <x-dropdown-link :href="route('pembelian.index')" :class="request()->routeIs('pembelian.index') ? 'text-red-500 font-bold' : ''">
+                                <x-dropdown-link :href="route('laporan_pembelian.index')" :class="request()->routeIs('pembelian.index') ? 'text-red-500 font-bold' : ''">
                                     {{ __('Pembelian') }}
                                 </x-dropdown-link>
                             </x-slot>
